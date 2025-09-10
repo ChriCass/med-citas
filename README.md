@@ -1,61 +1,68 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Conexión de Laravel a Microsoft SQL Server (XAMPP / Windows)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Guía breve para conectar un proyecto **Laravel** a **Microsoft SQL Server** en Windows usando XAMPP.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 1) Video a seguir (obligatorio)
+Sigue **este video en concreto** para la configuración general:
+- 🎥 https://www.youtube.com/watch?v=ZvVFJG_TftE
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 2) Drivers obligatorios para PHP (XAMPP)
+Es **forzoso** descargar e instalar los drivers de Microsoft para PHP (SQLSRV/PDO_SQLSRV) y copiarlos en el folder `ext` de tu PHP en XAMPP.
 
-## Learning Laravel
+- 📥 Descarga oficial: https://learn.microsoft.com/en-us/sql/connect/php/download-drivers-php-sql-server?view=sql-server-ver17
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**Pasos:**  
+1. Descarga los DLL que coincidan con tu versión de PHP (por ejemplo, `php_pdo_sqlsrv_82_ts_x64.dll` y `php_sqlsrv_82_ts_x64.dll` si usas PHP 8.2 TS x64).  
+2. Copia los DLL en: `C:\xampp\php\ext\`  
+3. (Opcional pero recomendado) Verifica/habilita en tu `php.ini`:
+   ```ini
+   
+   ; Ajusta el nombre de archivo a tu versión (81/82/83) y TS/NTS según corresponda:
+   extension=php_pdo_sqlsrv_82_ts_x64
+   extension=php_sqlsrv_82_ts_x64
+   ```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+ 
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 3) Configurar el archivo de entorno
+1. **Usar la plantilla**: toma el archivo **`.env.sqlsrv`**, **quítale la extensión adicional** y déjalo como **`.env`**.  
+2. **Modificar el host**: cambia **solo** la línea `DB_HOST` por tu nombre local de servidor/instancia. Ejemplo:
+   ```env
+   DB_HOST=LAPTOP-7B6GIHB6\SQLEXPRESS   # reemplázalo por tu nombre local
+   ```
+3. **Deja todo lo demás tal como está** en el `.env`.
 
-## Laravel Sponsors
+> Si usas instancia nombrada (p. ej. `SQLEXPRESS`), normalmente deja `DB_PORT` vacío. Si usas puerto fijo **1433**, puedes optar por `DB_HOST=127.0.0.1` y `DB_PORT=1433`.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 4) Ejecutar comandos (en este orden)
+Después de completar la configuración anterior, corre los siguientes comandos desde la raíz del proyecto:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+php artisan key:generate
+php artisan migrate
+php artisan serve
+```
 
-## Contributing
+- `key:generate`: crea la clave de aplicación en `.env`.
+- `migrate`: crea/actualiza las tablas base.
+- `serve`: levanta el servidor de desarrollo en `http://127.0.0.1:8000`.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 5) Verificación rápida / Solución de problemas
+- **No encuentra el driver (`could not find driver`)**: revisa que copiaste **los DLL correctos** en `ext`, que coinciden con tu versión de PHP (8.1/8.2/8.3), **x64**, y **TS/NTS**; y que están habilitados en `php.ini`.
+- **Mensajes de “Unable to initialize module / Module API mismatch”**: estás usando DLL de **otra versión** de PHP. Descarga los que correspondan **exactamente** a tu versión.
+- **La instancia no conecta**: habilita **TCP/IP** en *SQL Server Configuration Manager*; si usas `SQLEXPRESS`, prueba `EQUIPO\SQLEXPRESS` con `DB_PORT` vacío o fija `1433`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Notas
+- Si utilizas **Windows Authentication** (sin usuario/clave en `.env`), la cuenta de Windows bajo la que corre PHP/Apache/IIS debe tener **login y permisos** sobre la base de datos en SQL Server.
+- Si utilizas usuario SQL (p. ej. `sa`), mantén `DB_USERNAME` y `DB_PASSWORD` configurados en `.env`.
