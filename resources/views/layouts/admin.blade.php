@@ -15,17 +15,28 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- Font awesome -->
-    <script src="https://kit.fontawesome.com/599a5b96d9.js" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/599a5b96d9.js" crossorigin="anonymous"></script>
     <!-- Styles -->
     @livewireStyles
 </head>
 
-<body>
-    <div class="font-sans text-gray-900 antialiased">
-        {{ $slot }}
-    </div>
+<body class="font-sans antialiased">
+
+    @include('layouts.includes.admin.navigation')
+
+    @include('layouts.includes.admin.sidebar')
+
+    <main class="p-4 sm:ml-64">
+        <div class="mt-14">
+            {{ $slot }}
+        </div>
+    </main>
+
+
+    @stack('modals')
 
     @livewireScripts
+     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 </body>
 
 </html>
