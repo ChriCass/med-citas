@@ -6,36 +6,13 @@
             'route' => route('admin.dashboard'),
             'active' => request()->routeIs('admin.dashboard'),
         ],
-        [
-            'header' => 'Administrar Paginas',
-        ],
-        [
-            'name' => 'Gestión',
-            'icon' => 'fa-solid fa-cogs',
-            'route' => '#',
-            'active' => false,
-            'submenu' => [
-                [
-                    'name' => 'Usuarios',
-                    'route' => '#usuarios',
-                ],
-                [
-                    'name' => 'Reportes',
-                    'route' => '#reportes',
-                ],
-                [
-                    'name' => 'Configuración',
-                    'route' => '#configuracion',
-                ],
-            ]
-        ],
     ];
 @endphp
 
 <aside id="logo-sidebar"
-    class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+    class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full   border-r border-gray-200 sm:translate-x-0 bg-gray-800 border-gray-700"
     aria-label="Sidebar">
-    <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+    <div class="h-full px-3 pb-4 overflow-y-auto  bg-gray-800">
         <ul class="space-y-2 font-medium">
             @foreach ($links as $link)
                 @if (isset($link['header']))
@@ -46,7 +23,7 @@
                     <li x-data="{ open: false }">
                         <button type="button"
                             @click="open = !open"
-                            class="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                            class="flex items-center w-full p-2 text-gray-900 rounded-lg  hover:bg-gray-700 group"
                             :class="{ 'bg-teal-500 text-white': open }">
                             <span class="w-6 h-6 inline-flex items-center p-2">
                                 <i class="{{ $link['icon'] }}"
@@ -74,7 +51,7 @@
                 @else
                     <li>
                         <a href="{{ $link['route'] }}" @class([
-                            'flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group',
+                            'flex items-center p-2 text-gray-900 rounded-lg  text-white hover:bg-gray-100  hover:bg-gray-700 group',
                             'bg-teal-500 text-white' => $link['active'],
                         ])>
                             <span class="w-6 h-6 inline-flex items-center p-2">
