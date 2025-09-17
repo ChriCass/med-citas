@@ -6,6 +6,15 @@
             'route' => route('admin.dashboard'),
             'active' => request()->routeIs('admin.dashboard'),
         ],
+        [
+            'header' => 'Gestion',
+        ],
+        [
+            'name' => 'Roles y Permisos',
+            'icon' => 'fa-solid fa-shield-halved',  
+            'route' => route('admin.roles.index'),
+            'active' => request()->routeIs('admin.roles.*'),
+        ],
     ];
 @endphp
 
@@ -21,20 +30,17 @@
                     </li>
                 @elseif (isset($link['submenu']))
                     <li x-data="{ open: false }">
-                        <button type="button"
-                            @click="open = !open"
+                        <button type="button" @click="open = !open"
                             class="flex items-center w-full p-2 text-gray-900 rounded-lg  hover:bg-gray-700 group"
                             :class="{ 'bg-teal-500 text-white': open }">
                             <span class="w-6 h-6 inline-flex items-center p-2">
-                                <i class="{{ $link['icon'] }}"
-                                   :style="open ? 'color: #fff;' : 'color: #63E6BE;'"></i>
+                                <i class="{{ $link['icon'] }}" :style="open ? 'color: #fff;' : 'color: #63E6BE;'"></i>
                             </span>
                             <span class="ms-3 flex-1 text-left">{{ $link['name'] }}</span>
                             <svg class="w-3 h-3 ml-auto transition-transform duration-200"
-                                 :class="{ 'rotate-180': open }"
-                                 fill="none" viewBox="0 0 10 6">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m1 1 4 4 4-4" />
+                                :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 4 4 4-4" />
                             </svg>
                         </button>
                         <ul x-show="open" class="py-2 space-y-2 pl-8" x-cloak>

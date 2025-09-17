@@ -18,6 +18,7 @@ export default {
         "./vendor/wireui/wireui/src/WireUi/**/*.php",
         "./vendor/wireui/wireui/src/Components/**/*.php",
          './vendor/rappasoft/laravel-livewire-tables/resources/views/**/*.blade.php',
+         
     ],
 
     theme: {
