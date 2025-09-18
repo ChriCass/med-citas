@@ -21,15 +21,33 @@ class RoleController extends Controller
      */
     public function create()
     {
-          return view('admin.roles.create');
+        return view('admin.roles.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Role $role)
+
+
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:roles,name',
+        ]);
+
+        Role::create([
+            'name' =>  $request->name,
+        ]);
+
+        session()->flash('swal', [
+            'icon' => 'success',
+            'title' => '¡Rol creado correctamente!',
+            'text' => 'El nuevo rol ha sido agregado y ya está disponible en la lista.'
+        ]);
+
+        return redirect()
+            ->route('admin.roles.index')
+            ->with('success', 'Rol creado correctamente.');
     }
 
     /**
@@ -37,7 +55,7 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-       return view('admin.roles.show', compact('role'));
+        return view('admin.roles.show', compact('role'));
     }
 
     /**
@@ -45,7 +63,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-         return view('admin.roles.edit', compact('role'));
+        return view('admin.roles.edit', compact('role'));
     }
 
     /**
