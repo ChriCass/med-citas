@@ -46,8 +46,7 @@ class RoleController extends Controller
         ]);
 
         return redirect()
-            ->route('admin.roles.index')
-            ->with('success', 'Rol creado correctamente.');
+            ->route('admin.roles.index');
     }
 
     /**
@@ -63,6 +62,17 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+
+        if ($role->id <= 4) {
+            session()->flash('swal', [
+                'icon' => 'error',
+                'title' => '¡Error!',
+                'text' => 'NO puedes editar este rol'
+            ]);
+            return redirect()
+                ->route('admin.roles.index');
+        }
+
         return view('admin.roles.edit', compact('role'));
     }
 
@@ -71,7 +81,20 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:roles,name,' . $role->id
+        ]);
+
+        $role->update(['name' => $request->name]);
+
+        session()->flash('swal', [
+            'icon' => 'success',
+            'title' => '¡Rol actualizado correctamente!',
+            'text' => 'El rol ha sido actualizado y ya está disponible en la lista.'
+        ]);
+
+        return redirect()
+            ->route('admin.roles.edit', $role);
     }
 
     /**
@@ -79,6 +102,25 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        if ($role->id <= 4) {
+            session()->flash('swal', [
+                'icon' => 'error',
+                'title' => '¡Error!',
+                'text' => 'NO puedes eliminar este rol'
+            ]);
+            return redirect()
+                ->route('admin.roles.index');
+        }
+
+        $role->delete();
+
+        session()->flash('swal', [
+            'icon' => 'success',
+            'title' => '¡Rol eliminado correctamente!',
+            'text' => 'El rol ha sido eliminado y ya no está disponible en la lista.'
+        ]);
+
+        return redirect()
+            ->route('admin.roles.index');
     }
 }

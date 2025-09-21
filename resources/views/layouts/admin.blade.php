@@ -19,11 +19,11 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
 
-     @wireUiScripts
+    @wireUiScripts
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- Font awesome -->
-    
+
     <script src="https://kit.fontawesome.com/599a5b96d9.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Styles -->
@@ -61,6 +61,31 @@
             Swal.fire(@json(session('swal')));
         </script>
     @endif
+
+    <script>
+        document.addEventListener('submit', function(e) {
+            const form = e.target;
+            if (!form.matches('.delete-form')) return;
+
+            e.preventDefault(); // ✅ corregido
+
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // llamada nativa
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>
