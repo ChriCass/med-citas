@@ -11,9 +11,15 @@
         ],
         [
             'name' => 'Roles y Permisos',
-            'icon' => 'fa-solid fa-shield-halved',  
+            'icon' => 'fa-solid fa-shield-halved',
             'route' => route('admin.roles.index'),
             'active' => request()->routeIs('admin.roles.*'),
+        ],
+        [
+            'name' => 'Usuarios',
+            'icon' => 'fa-solid fa-users',
+            'route' => route('admin.users.index'),
+            'active' => request()->routeIs('admin.users.*'),
         ],
     ];
 @endphp

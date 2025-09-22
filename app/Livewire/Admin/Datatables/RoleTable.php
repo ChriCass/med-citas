@@ -21,7 +21,7 @@ class RoleTable extends DataTableComponent
         return [
             Column::make("Id", "id")
              ->searchable()
-                ->sortable(),
+            ,
             Column::make("Nombre", "name")
                 ->searchable()
                 ->sortable(),
