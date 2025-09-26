@@ -21,6 +21,12 @@
             'route' => route('admin.users.index'),
             'active' => request()->routeIs('admin.users.*'),
         ],
+        [
+            'name' => 'Pacientes',
+            'icon' => 'fa-solid fa-user-injured',
+            'route' => route('admin.patients.index'),
+            'active' => request()->routeIs('admin.patients.*'),
+        ],
     ];
 @endphp
 
